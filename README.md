@@ -35,5 +35,5 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Who do I talk to? ###
 
-* Eoza Berhanu Lemma (rozaberhanu[at]gmail.com)
-* 
+* Roza Berhanu Lemma (rozaberhanu[at]gmail.com)
+*
