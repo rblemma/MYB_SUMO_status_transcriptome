@@ -10,6 +10,7 @@ LABLES = ['pEF', 'pEF_U2992', 'ANAA', '2KR', 'ANAA']
 rule all:
     input:
         expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{read}_NonPhiX_subset.sorted.bam.iSizeMetrics.txt", read=READ),
+        expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{read}_NonPhiX_subset.sorted.bam.pdf", read=READ),
         directory(expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{read}_NonPhiX_tophat2", read=READ))
 
 
@@ -109,20 +110,21 @@ rule tophat:
         module purge;
         """
 
-# rule cufflinks:
-#     input:
-#         #lambda wildcards: glob.glob('/work/users/rozabl/Roza_Myb/Roza_K562_RNA-seq/4_tophat/{read}_NonPhiX_tophat2/{read}/accepted_hits.bam'.format(tf=wildcards.tf))
-#         directory("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{read}_NonPhiX_tophat2")
-#     output:
-#         "cuffdiff.log2"
-#     params:
-#         ref_genome='{0}/ref/ensembl/genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa'.format(DATA),
-#         ref_gtf='{0}/ref/ensembl/gtf/Homo_sapiens.GRCh38.90.gtf'.format(DATA)
-#     shell:
-#         """
-#         module load cufflinks;
-#         mkdir 5_cufflinks;
-#         cuffdiff -p 30 -o . --library-type fr-firststrand -b {params.ref_genome} -u {params.ref_gtf} \
-#             -L pEF,pEF_U2992,hcM_U2992,D152V,2KR_U2992,ANNA_U2992 {input} 2> {output};
-#         module purge;
-#         """
+rule cufflinks:
+    input:
+        #lambda wildcards: glob.glob('/work/users/rozabl/Roza_Myb/Roza_K562_RNA-seq/4_tophat/{read}_NonPhiX_tophat2/{read}/accepted_hits.bam'.format(tf=wildcards.tf))
+        directory(expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{read}_NonPhiX_tophat2",
+            read=READ))
+    output:
+        "cuffdiff.log2"
+    params:
+        ref_genome='{0}/ref/ensembl/genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa'.format(DATA),
+        ref_gtf='{0}/ref/ensembl/gtf/Homo_sapiens.GRCh38.90.gtf'.format(DATA)
+    shell:
+        """
+        module load cufflinks;
+        mkdir 5_cufflinks;
+        cuffdiff -p 30 -o . --library-type fr-firststrand -b {params.ref_genome} -u {params.ref_gtf} \
+            -L pEF,pEF_U2992,hcM_U2992,D152V,2KR_U2992,ANNA_U2992 {input} 2> {output};
+        module purge;
+        """
