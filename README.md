@@ -70,5 +70,5 @@ git clone git@github.com:rblemma/K562_Myb_ChIP-seq.git
 
 ### Who do I talk to? ###
 
-* Roza Berhanu Lemma (rozaberhanu[at]gmail.com)
+* Roza Berhanu Lemma (rozaberhanu@gmail.com)
 *
