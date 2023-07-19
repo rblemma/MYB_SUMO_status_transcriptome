@@ -7,9 +7,12 @@ LABLES = ['ctrl', 'KD', 'ANAA_rescue', '2KR_rescue', 'D152V-rescue']
 
 rule all:
     input:
-        expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam.iSizeMetrics.txt", read=READ),
-        expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam.pdf", read=READ),
-        directory(expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{lables}_{read}_NonPhiX_tophat2", read=READ))
+        expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam.iSizeMetrics.txt",
+            lables=LABLES, read=READ),
+        expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam.pdf",
+            lables=LABLES, read=READ),
+        directory(expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{lables}_{read}_NonPhiX_tophat2",
+            lables=LABLES, read=READ))
 
 
 rule trimmomatic_run:
