@@ -73,4 +73,4 @@ snakemake -j 1
 
 ### Who do I talk to? ###
 
-* Roza Berhanu Lemma (rozaberhanu[at]gmail.com)
+* Roza Berhanu Lemma (rozaberhanu@gmail.com)
