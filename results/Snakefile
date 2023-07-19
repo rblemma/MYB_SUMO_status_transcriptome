@@ -1,28 +1,26 @@
 DATA ='../data'
 SRC ='../src'
 BIN ='../bin'
-# READ = ['pEF_1', 'pEF_2', 'pEF_3', 'pEF_U2992_1', 'pEF_U2992_2', 'pEF_U2992_3', 'hcM_1', 'hcM_2', 'hcM_3',
-#     'D152V_1', 'D152V_2', 'D152V_3', '2KR_1', '2KR_2', '2KR_3', 'ANAA_1', 'ANAA_2', 'ANAA_3']
-READ = ['D152V_1', 'D152V_2', 'D152V_3']
-LABLES = ['pEF', 'pEF_U2992', 'ANAA', '2KR', 'ANAA']
+READ = ['rep1', 'rep22', 'rep3']
+LABLES = ['ctrl', 'KD', 'ANAA_rescue', '2KR_rescue', 'D152V-rescue']
 
 
 rule all:
     input:
-        expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{read}_NonPhiX_subset.sorted.bam.iSizeMetrics.txt", read=READ),
-        expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{read}_NonPhiX_subset.sorted.bam.pdf", read=READ),
-        directory(expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{read}_NonPhiX_tophat2", read=READ))
+        expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam.iSizeMetrics.txt", read=READ),
+        expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam.pdf", read=READ),
+        directory(expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{lables}_{read}_NonPhiX_tophat2", read=READ))
 
 
 rule trimmomatic_run:
     input:
-        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/data/0_raw_data/{read}_R1.fastq.gz",
-        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/data/0_raw_data/{read}_R2.fastq.gz"
+        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/data/0_raw_data/{lables}_{read}_R1.fastq.gz",
+        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/data/0_raw_data/{lables}_{read}_R2.fastq.gz"
     output:
-        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{read}_trim_R1.fq",
-        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{read}_trim_R2.fq",
-        read_1_un="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{read}_trim_R1_un.fq",
-        read_2_un="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{read}_trim_R2_un.fq"
+        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{lables}_{read}_trim_R1.fq",
+        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{lables}_{read}_trim_R2.fq",
+        read_1_un="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{lables}_{read}_trim_R1_un.fq",
+        read_2_un="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{lables}_{read}_trim_R2_un.fq"
     shell:
         """
         module purge;
@@ -38,11 +36,11 @@ rule trimmomatic_run:
 
 rule bbmap_run:
     input:
-        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{read}_trim_R1.fq",
-        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{read}_trim_R2.fq"
+        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{lables}_{read}_trim_R1.fq",
+        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/1_trimmomatic/{lables}_{read}_trim_R2.fq"
     output:
-        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{read}_NonPhiX_R1.fq",
-        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{read}_NonPhiX_R2.fq"
+        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{lables}_{read}_NonPhiX_R1.fq",
+        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{lables}_{read}_NonPhiX_R2.fq"
     params:
         phix='{0}/ref/Phix.fa'.format(DATA)
     shell:
@@ -57,10 +55,10 @@ rule bbmap_run:
 
 rule align_for_libSize_Estimate:
     input:
-        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{read}_NonPhiX_R1.fq",
-        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{read}_NonPhiX_R2.fq"
+        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{lables}_{read}_NonPhiX_R1.fq",
+        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{lables}_{read}_NonPhiX_R2.fq"
     output:
-        "/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{read}_NonPhiX_subset.sorted.bam"
+        "/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam"
     params:
         cdna='{0}/ref/ensembl/cdna/Homo_sapiens.GRCh38.cdna.all'.format(DATA)
     shell:
@@ -79,10 +77,10 @@ rule align_for_libSize_Estimate:
 
 rule libSize_Estimate:
     input:
-        "/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{read}_NonPhiX_subset.sorted.bam"
+        "/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam"
     output:
-        txt="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{read}_NonPhiX_subset.sorted.bam.iSizeMetrics.txt",
-        pdf="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{read}_NonPhiX_subset.sorted.bam.pdf"
+        txt="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam.iSizeMetrics.txt",
+        pdf="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/3_libSizeEst/{lables}_{read}_NonPhiX_subset.sorted.bam.pdf"
     shell:
         """
         module load openmpi.intel picard-tools samtools;
@@ -93,10 +91,10 @@ rule libSize_Estimate:
 
 rule tophat:
     input:
-        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{read}_NonPhiX_R1.fq",
-        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{read}_NonPhiX_R2.fq"
+        read_1="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{lables}_{read}_NonPhiX_R1.fq",
+        read_2="/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/2_bbmap/{lables}_{read}_NonPhiX_R2.fq"
     output:
-        directory("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{read}_NonPhiX_tophat2")
+        directory("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{lables}_{read}_NonPhiX_tophat2")
     params:
         ensemble_build='{0}/ref/ensembl/bowtie2-index/Homo_sapiens.GRCh38.dna.primary_assembly'.format(DATA),
         ensemble_transcriptome='{0}/ref/ensembl/bowtie2-index/trans_th2_idx/known'.format(DATA)
@@ -113,7 +111,7 @@ rule tophat:
 rule cufflinks:
     input:
         #lambda wildcards: glob.glob('/work/users/rozabl/Roza_Myb/Roza_K562_RNA-seq/4_tophat/{read}_NonPhiX_tophat2/{read}/accepted_hits.bam'.format(tf=wildcards.tf))
-        directory(expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{read}_NonPhiX_tophat2",
+        directory(expand("/cluster/work/users/rozabl/MYB_SUMO_status_transcriptome/results/4_tophat/{lables}_{read}_NonPhiX_tophat2",
             read=READ))
     output:
         "cuffdiff.log2"
