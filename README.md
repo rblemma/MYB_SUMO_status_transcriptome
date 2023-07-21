@@ -1,6 +1,6 @@
 # README #
 
-### A snakmake pipeline for processing bulk RNA-seq data from [PMID:xxx](https://doi.org/10.1016/j.jbc.2023.105062) ###
+## A snakmake pipeline for processing bulk RNA-seq data from [PMID:xxx](https://doi.org/10.1016/j.jbc.2023.105062) ##
 - This repo allows to perform bulk RNA-seqe analysis of transcriptome profiling done K562 as reported in this [paper](https://doi.org/10.1016/j.jbc.2023.105062)
  - The K562 transcriptome are generated in K562 cells with the following conditions
    - ctrl -> control cell lines (treated with control siRNA)

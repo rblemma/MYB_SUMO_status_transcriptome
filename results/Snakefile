@@ -2,7 +2,7 @@ DATA ='../data'
 SRC ='../src'
 BIN ='../bin'
 READ = ['rep1', 'rep22', 'rep3']
-LABLES = ['ctrl', 'KD', 'ANAA_rescue', '2KR_rescue', 'D152V-rescue']
+LABLES = ['ctrl', 'KD', 'WT-rescue', 'ANAA_rescue', '2KR_rescue', 'D152V-rescue']
 
 
 rule all:
